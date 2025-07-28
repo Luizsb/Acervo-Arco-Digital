@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for better card layout */
+@layer components {
+  .content-card {
+    @apply flex flex-col h-full;
+  }
+  
+  .content-card-content {
+    @apply flex flex-col flex-grow;
+  }
+  
+  .content-card-button {
+    @apply flex-shrink-0;
+  }
+}
+
+/* Ensure cards have consistent height in grid */
+.grid-cards {
+  @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-stretch;
+}
