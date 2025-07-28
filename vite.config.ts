@@ -15,6 +15,23 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  // Esta linha é a solução para o erro 404
-  base: '/Acervo-Arco-Digital/', 
+  // Configuração para GitHub Pages
+  base: process.env.NODE_ENV === 'production' ? '/Acervo-Arco-Digital/' : '/',
+  build: {
+    // Garante que os assets sejam relativos
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        // Usa caminhos relativos para os assets
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+      },
+    },
+  },
+  // Configuração para desenvolvimento
+  server: {
+    port: 3000,
+    open: true,
+  },
 })

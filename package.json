@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "node serve.js",
+    "deploy": "npm run build && npx gh-pages -d dist"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",
