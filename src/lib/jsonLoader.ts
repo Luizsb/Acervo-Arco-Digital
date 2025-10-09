@@ -6,7 +6,9 @@ import { EducationalContent } from '../types/content';
 export async function loadCSVData(): Promise<EducationalContent[]> {
   try {
     // Carrega o JSON gerado pelo script csv2json.mjs
-    const response = await fetch('/data/acervo.json');
+    // Usa import.meta.env.BASE_URL para funcionar com GitHub Pages
+    const baseUrl = import.meta.env.BASE_URL || '/';
+    const response = await fetch(`${baseUrl}data/acervo.json`);
     
     if (!response.ok) {
       throw new Error(`Erro ao carregar dados: ${response.status} ${response.statusText}`);
