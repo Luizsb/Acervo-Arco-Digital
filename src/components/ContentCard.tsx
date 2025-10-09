@@ -15,7 +15,9 @@ export const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
   };
 
   // Construir o caminho da thumbnail local baseado no código do ODA
-  const thumbnailPath = `/thumbs/${content.codigo}.png`;
+  // Usa import.meta.env.BASE_URL para funcionar com GitHub Pages
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  const thumbnailPath = `${baseUrl}thumbs/${content.codigo}.png`;
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200 group content-card min-h-[350px]">
