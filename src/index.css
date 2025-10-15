@@ -50,40 +50,8 @@
   @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-stretch;
 }
 
-/* Compact view layout - same width as grid */
-.compact-cards {
-  @apply w-full space-y-4;
-}
-
-/* Ensure compact cards use full available width */
-.compact-cards > * {
-  @apply w-full;
-}
-
-/* Prevent any overlay elements in compact card images */
-.compact-cards .relative {
-  overflow: hidden;
-}
-
-.compact-cards .relative > * {
-  position: relative;
-  z-index: 0;
-}
-
-
 /* Fix main content scrolling */
 .main-content {
   @apply h-screen overflow-y-auto;
   max-height: calc(100vh - 120px);
-}
-
-/* Compact view responsive styles */
-@media (max-width: 640px) {
-  .compact-view-mobile {
-    @apply flex-col;
-  }
-  
-  .compact-view-mobile .compact-image {
-    @apply w-full h-24;
-  }
 }

@@ -4,12 +4,14 @@ import { Search, X } from 'lucide-react';
 interface SearchBarProps {
   searchTerm: string;
   onSearchChange: (term: string) => void;
+  onClearSearch?: () => void;
   suggestions?: string[];
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
   searchTerm,
   onSearchChange,
+  onClearSearch,
   suggestions = []
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -19,7 +21,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   ).slice(0, 5);
 
   const handleClear = () => {
-    onSearchChange('');
+    if (onClearSearch) {
+      onClearSearch();
+    } else {
+      onSearchChange('');
+    }
     setShowSuggestions(false);
   };
 

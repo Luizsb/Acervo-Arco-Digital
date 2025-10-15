@@ -47,10 +47,10 @@ export const useEducationalContent = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = contents;
+    let filtered = [...contents]; // Create a fresh copy
 
     // Apply search filter
-    if (searchTerm) {
+    if (searchTerm && searchTerm.trim() !== '') {
       filtered = filtered.filter(content =>
         (content.nome || content.titulo).toLowerCase().includes(searchTerm.toLowerCase()) ||
         (content.componente || content.componente_curricular).toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -119,6 +119,16 @@ export const useEducationalContent = () => {
       samr: []
     });
     setSearchTerm('');
+    setCurrentPage(1); // Reset to first page when clearing filters
+    // Force re-filtering by resetting filtered contents
+    setFilteredContents(contents);
+  };
+
+  const clearSearch = () => {
+    setSearchTerm('');
+    setCurrentPage(1); // Reset to first page when clearing search
+    // Force re-filtering by resetting filtered contents
+    setFilteredContents(contents);
   };
 
   const getUniqueValues = (field: keyof EducationalContent) => {
@@ -191,6 +201,7 @@ export const useEducationalContent = () => {
     activeFilters,
     updateFilter,
     clearFilters,
+    clearSearch,
     getUniqueValues,
     refetch: fetchContents,
     // Pagination

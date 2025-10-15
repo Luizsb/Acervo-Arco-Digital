@@ -1,16 +1,14 @@
 import { useState, useMemo } from 'react';
-import { BookOpen, Grid3X3, List } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import { SearchBar } from './components/SearchBar';
 import { FilterPanel } from './components/FilterPanel';
 import { ContentCard } from './components/ContentCard';
-import { ContentCardCompact } from './components/ContentCardCompact';
 import { LoadingCard } from './components/LoadingCard';
 import { Pagination } from './components/Pagination';
 import { useEducationalContent } from './hooks/useEducationalContent';
 
 function App() {
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'compact'>('grid');
 
   const {
     contents,
@@ -22,6 +20,7 @@ function App() {
     activeFilters,
     updateFilter,
     clearFilters,
+    clearSearch,
     getUniqueValues,
     refetch,
     currentPage,
@@ -103,11 +102,12 @@ function App() {
                 <SearchBar
                   searchTerm={searchTerm}
                   onSearchChange={setSearchTerm}
+                  onClearSearch={clearSearch}
                   suggestions={searchSuggestions}
                 />
               </div>
 
-              {/* Results Summary and View Toggle */}
+              {/* Results Summary */}
               <div className="flex items-center justify-between">
                 <p className="text-gray-600">
                   {loading ? 'Carregando...' : error ? 'Erro ao carregar' : `${totalItems} conteúdo${totalItems !== 1 ? 's' : ''} encontrado${totalItems !== 1 ? 's' : ''}`}
@@ -116,36 +116,11 @@ function App() {
                   {error && (
                     <button
                       onClick={refetch}
-                      className="text-blue-600 hover:text-blue-700 text-sm font-medium mr-4"
+                      className="text-blue-600 hover:text-blue-700 text-sm font-medium"
                     >
                       Tentar novamente
                     </button>
                   )}
-                  {/* View Mode Toggle */}
-                  <div className="flex bg-gray-100 rounded-lg p-1">
-                    <button
-                      onClick={() => setViewMode('grid')}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                        viewMode === 'grid'
-                          ? 'bg-white text-blue-600 shadow-sm'
-                          : 'text-gray-600 hover:text-gray-900'
-                      }`}
-                    >
-                      <Grid3X3 className="w-4 h-4" />
-                      Grade
-                    </button>
-                    <button
-                      onClick={() => setViewMode('compact')}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                        viewMode === 'compact'
-                          ? 'bg-white text-blue-600 shadow-sm'
-                          : 'text-gray-600 hover:text-gray-900'
-                      }`}
-                    >
-                      <List className="w-4 h-4" />
-                      Compacta
-                    </button>
-                  </div>
                 </div>
               </div>
 
@@ -167,25 +142,17 @@ function App() {
                   </button>
                 </div>
               ) : loading ? (
-                <div className={viewMode === 'grid' ? 'grid-cards' : 'space-y-4'}>
-                  {Array.from({ length: viewMode === 'grid' ? 6 : 3 }).map((_, index) => (
+                <div className="grid-cards">
+                  {Array.from({ length: 6 }).map((_, index) => (
                     <LoadingCard key={index} />
                   ))}
                 </div>
               ) : contents.length > 0 ? (
-                viewMode === 'grid' ? (
-                  <div className="grid-cards">
-                    {contents.map((content) => (
-                      <ContentCard key={content.id} content={content} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="compact-cards">
-                    {contents.map((content) => (
-                      <ContentCardCompact key={content.id} content={content} />
-                    ))}
-                  </div>
-                )
+                <div className="grid-cards">
+                  {contents.map((content) => (
+                    <ContentCard key={content.id} content={content} />
+                  ))}
+                </div>
               ) : (
                 <div className="text-center py-12">
                   <div className="text-gray-400 text-6xl mb-4">📚</div>
