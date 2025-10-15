@@ -1,14 +1,16 @@
 import { useState, useMemo } from 'react';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Grid3X3, List } from 'lucide-react';
 import { SearchBar } from './components/SearchBar';
 import { FilterPanel } from './components/FilterPanel';
 import { ContentCard } from './components/ContentCard';
+import { ContentCardCompact } from './components/ContentCardCompact';
 import { LoadingCard } from './components/LoadingCard';
 import { Pagination } from './components/Pagination';
 import { useEducationalContent } from './hooks/useEducationalContent';
 
 function App() {
   const [showFilters, setShowFilters] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'compact'>('grid');
 
   const {
     contents,
@@ -79,7 +81,7 @@ function App() {
         </div>
       </header>
 
-      <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-50">
+      <div className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 bg-gray-50">
         <div className="flex flex-col lg:flex-row gap-8 lg:items-start">
           {/* Sidebar Filters */}
           <aside className={`lg:w-80 flex-shrink-0 ${showFilters ? 'block' : 'hidden lg:block'}`}>
@@ -105,65 +107,102 @@ function App() {
                 />
               </div>
 
-              {/* Results Summary */}
+              {/* Results Summary and View Toggle */}
               <div className="flex items-center justify-between">
                 <p className="text-gray-600">
                   {loading ? 'Carregando...' : error ? 'Erro ao carregar' : `${totalItems} conteúdo${totalItems !== 1 ? 's' : ''} encontrado${totalItems !== 1 ? 's' : ''}`}
                 </p>
-                {error && (
-                  <button
-                    onClick={refetch}
-                    className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-                  >
-                    Tentar novamente
-                  </button>
-                )}
-              </div>
-
-              {/* Content Grid */}
-              <div className="grid-cards">
-                {error ? (
-                  <div className="col-span-full text-center py-12">
-                    <div className="text-red-400 text-6xl mb-4">⚠️</div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      Erro ao carregar conteúdos
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      {error}
-                    </p>
+                <div className="flex items-center gap-2">
+                  {error && (
                     <button
                       onClick={refetch}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                      className="text-blue-600 hover:text-blue-700 text-sm font-medium mr-4"
                     >
-                      Tentar Novamente
+                      Tentar novamente
                     </button>
-                  </div>
-                ) : loading ? (
-                  Array.from({ length: 6 }).map((_, index) => (
-                    <LoadingCard key={index} />
-                  ))
-                ) : contents.length > 0 ? (
-                  contents.map((content) => (
-                    <ContentCard key={content.id} content={content} />
-                  ))
-                ) : (
-                  <div className="col-span-full text-center py-12">
-                    <div className="text-gray-400 text-6xl mb-4">📚</div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      Nenhum conteúdo encontrado
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      Tente ajustar seus filtros ou termo de busca
-                    </p>
+                  )}
+                  {/* View Mode Toggle */}
+                  <div className="flex bg-gray-100 rounded-lg p-1">
                     <button
-                      onClick={clearFilters}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                      onClick={() => setViewMode('grid')}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                        viewMode === 'grid'
+                          ? 'bg-white text-blue-600 shadow-sm'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
                     >
-                      Limpar Filtros
+                      <Grid3X3 className="w-4 h-4" />
+                      Grade
+                    </button>
+                    <button
+                      onClick={() => setViewMode('compact')}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                        viewMode === 'compact'
+                          ? 'bg-white text-blue-600 shadow-sm'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      <List className="w-4 h-4" />
+                      Compacta
                     </button>
                   </div>
-                )}
+                </div>
               </div>
+
+              {/* Content Display */}
+              {error ? (
+                <div className="text-center py-12">
+                  <div className="text-red-400 text-6xl mb-4">⚠️</div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    Erro ao carregar conteúdos
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    {error}
+                  </p>
+                  <button
+                    onClick={refetch}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                  >
+                    Tentar Novamente
+                  </button>
+                </div>
+              ) : loading ? (
+                <div className={viewMode === 'grid' ? 'grid-cards' : 'space-y-4'}>
+                  {Array.from({ length: viewMode === 'grid' ? 6 : 3 }).map((_, index) => (
+                    <LoadingCard key={index} />
+                  ))}
+                </div>
+              ) : contents.length > 0 ? (
+                viewMode === 'grid' ? (
+                  <div className="grid-cards">
+                    {contents.map((content) => (
+                      <ContentCard key={content.id} content={content} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="compact-cards">
+                    {contents.map((content) => (
+                      <ContentCardCompact key={content.id} content={content} />
+                    ))}
+                  </div>
+                )
+              ) : (
+                <div className="text-center py-12">
+                  <div className="text-gray-400 text-6xl mb-4">📚</div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    Nenhum conteúdo encontrado
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    Tente ajustar seus filtros ou termo de busca
+                  </p>
+                  <button
+                    onClick={clearFilters}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                  >
+                    Limpar Filtros
+                  </button>
+                </div>
+              )}
 
               {/* Pagination */}
               {!loading && !error && allContents.length > 0 && (
