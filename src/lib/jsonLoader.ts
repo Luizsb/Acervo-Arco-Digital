@@ -25,14 +25,9 @@ export async function loadCSVData(): Promise<EducationalContent[]> {
       link: item.url_principal        // alias para url_principal
     }));
     
-    // Remove duplicatas baseado no código único
-    const uniqueData = enrichedData.filter((item, index, self) => 
-      index === self.findIndex(i => i.codigo === item.codigo)
-    );
+    console.log(`✅ Carregados ${enrichedData.length} itens do acervo`);
     
-    console.log(`✅ Carregados ${uniqueData.length} itens únicos do acervo (removidas ${enrichedData.length - uniqueData.length} duplicatas)`);
-    
-    return uniqueData;
+    return enrichedData;
   } catch (error) {
     console.error('❌ Erro ao carregar dados do acervo:', error);
     throw error;
