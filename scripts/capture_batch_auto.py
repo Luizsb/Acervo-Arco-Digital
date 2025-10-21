@@ -414,7 +414,7 @@ def main():
 
     ap.add_argument("--code-col", default="G")
     ap.add_argument("--url-col", default="M")
-    ap.add_argument("--filter", default="SAE25", help="Filtro de prefixo de código (ex: SAE25, EF22, etc)")
+    ap.add_argument("--filter", default=None, help="Filtro de prefixo de código (ex: SAE25, EF22, etc)")
     ap.add_argument("--skip-existing", action="store_true", default=True, 
                     help="Pular thumbs que já existem (padrão: True)")
     ap.add_argument("--limit", type=int, default=None, help="Limitar processamento aos N primeiros itens (para testes)")
