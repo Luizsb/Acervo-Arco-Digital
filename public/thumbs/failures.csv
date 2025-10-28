@@ -1,0 +1,5 @@
+codigo,url,erro
+EF22_6_CIE_L1_U1_03_OD2,https://livrodigital.sae.digital/objeto-digital/EF22_6_CIE_L1_U1_03_OD2,timeout esperando body.id == EF22_6_CIE_L1_U1_03_OD2
+EF22_6_CIE_L1_U1_02_OD1,https://livrodigital.sae.digital/objeto-digital/EF22_6_CIE_L1_U1_02_OD1,timeout esperando body.id == EF22_6_CIE_L1_U1_02_OD1
+SAE25_EI_G4_BL4_UT7_OA1,https://url.sae.digital/SAE25_EI_G4_BL4_UT7_OA1,timeout esperando body.id == SAE25_EI_G4_BL4_UT7_OA1
+SAE25_EI_G5_BL4_UT6_OA1,https://url.sae.digital/SAE25_EI_G5_BL4_UT6_OA1,timeout esperando body.id == SAE25_EI_G5_BL4_UT6_OA1
