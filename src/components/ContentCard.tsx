@@ -16,23 +16,30 @@ export const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
 
   // Construir o caminho da thumbnail local baseado no código do ODA
   // Usa import.meta.env.BASE_URL para funcionar com GitHub Pages
+  // Prioriza WebP, com fallback para PNG (primeiro na raiz, depois no backup)
   const baseUrl = import.meta.env.BASE_URL || '/';
-  const thumbnailPath = `${baseUrl}thumbs/${content.codigo}.png`;
+  const webpPath = `${baseUrl}thumbs/${content.codigo}.webp`;
+  const pngPath = `${baseUrl}thumbs/${content.codigo}.png`;
+  const pngBackupPath = `${baseUrl}thumbs/png-backup/${content.codigo}.png`;
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200 group content-card min-h-[350px]">
       <div className="relative flex-shrink-0">
         <div className="w-full h-32 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center overflow-hidden">
           {!imageError && (
-            <img 
-              src={thumbnailPath}
-              alt={content.nome || content.titulo}
-              className={`w-full h-full object-cover transition-opacity duration-300 ${
-                imageLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
-              onLoad={() => setImageLoaded(true)}
-              onError={() => setImageError(true)}
-            />
+            <picture>
+              <source srcSet={webpPath} type="image/webp" />
+              <source srcSet={pngPath} type="image/png" />
+              <img
+                src={pngBackupPath}
+                alt={content.nome || content.titulo}
+                className={`w-full h-full object-cover transition-opacity duration-300 ${
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageError(true)}
+              />
+            </picture>
           )}
           {(!imageLoaded || imageError) && (
             <div className="absolute inset-0 flex items-center justify-center">

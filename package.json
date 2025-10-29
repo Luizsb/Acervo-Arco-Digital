@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "serve": "node serve.js",
-    "deploy": "npm run build && npx gh-pages -d dist"
+    "deploy": "npm run build && npx gh-pages -d dist",
+    "convert:webp": "node scripts/convert_thumbs_to_webp.mjs"
   },
   "dependencies": {
     "csv-parse": "^6.1.0",
@@ -19,7 +20,8 @@
     "p-limit": "^7.1.1",
     "puppeteer": "^24.23.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "sharp": "0.34.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
