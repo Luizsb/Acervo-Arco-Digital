@@ -307,7 +307,7 @@
   {
     "id": "EF22_9_CIE_L2_U2_01_OD1",
     "codigo": "EF22_9_CIE_L2_U2_01_OD1",
-    "titulo": "Seleção Natural de Mariposas",
+    "titulo": "Pasteurização e ultrapasteurização",
     "descricao": "- - CIE",
     "segmento": "AF",
     "componente_curricular": "CIE",
@@ -330,7 +330,7 @@
     "status": "ativo",
     "ativo_bigodao": "SIM",
     "versao": "2024",
-    "slug": "ef22_9_cie_l2_u2_01_od1-selecao-natural-de-mariposas"
+    "slug": "ef22_9_cie_l2_u2_01_od1-pasteurizacao-e-ultrapasteurizacao"
   },
   {
     "id": "EF22_2_ING_L2_U4_02_OD2",
