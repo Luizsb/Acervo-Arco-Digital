@@ -4,9 +4,10 @@ import { EducationalContent } from '../types/content';
 
 interface ContentCardProps {
   content: EducationalContent;
+  onPreview?: () => void;
 }
 
-export const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
+export const ContentCard: React.FC<ContentCardProps> = ({ content, onPreview }) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -112,26 +113,35 @@ export const ContentCard: React.FC<ContentCardProps> = ({ content }) => {
           )}
         </div>
 
-        <button
-          onClick={() => {
-            if (content.link && content.link !== '-' && content.link.trim() !== '') {
-              window.open(content.link, '_blank');
-            } else {
-              alert('Link não disponível para este conteúdo');
-            }
-          }}
-          className={`w-full mt-4 font-medium py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors duration-200 content-card-button ${
-            content.link && content.link !== '-' && content.link.trim() !== ''
-              ? 'bg-blue-600 hover:bg-blue-700 text-white'
-              : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-          }`}
-        >
-          <ExternalLink className="w-4 h-4" />
-          {content.link && content.link !== '-' && content.link.trim() !== '' 
-            ? 'Acessar Conteúdo' 
-            : 'Link Indisponível'
-          }
-        </button>
+        <div className="flex gap-2 mt-4 items-stretch justify-start -ml-2.5">
+          <button
+            onClick={() => onPreview && onPreview()}
+            className={`font-medium py-2 px-3 text-sm whitespace-nowrap rounded-lg flex items-center justify-center gap-2 transition-colors duration-200 content-card-button ${
+              content.link && content.link !== '-' && content.link.trim() !== ''
+                ? 'bg-gray-900 hover:bg-black text-white'
+                : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+            }`}
+            disabled={!content.link || content.link === '-' || content.link.trim() === ''}
+          >
+            Pré-visualizar
+          </button>
+          <button
+            onClick={() => {
+              if (content.link && content.link !== '-' && content.link.trim() !== '') {
+                window.open(content.link, '_blank');
+              }
+            }}
+            className={`font-medium py-2 px-3 text-sm whitespace-nowrap rounded-lg flex items-center justify-center gap-2 transition-colors duration-200 content-card-button ${
+              content.link && content.link !== '-' && content.link.trim() !== ''
+                ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+            }`}
+            disabled={!content.link || content.link === '-' || content.link.trim() === ''}
+          >
+            <ExternalLink className="w-4 h-4" />
+            Abrir nova aba
+          </button>
+        </div>
       </div>
     </div>
   );

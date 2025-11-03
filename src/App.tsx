@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { PreviewModal } from './components/PreviewModal';
 import { BookOpen } from 'lucide-react';
 import { SearchBar } from './components/SearchBar';
 import { FilterPanel } from './components/FilterPanel';
@@ -31,6 +32,18 @@ function App() {
     nextPage,
     prevPage
   } = useEducationalContent();
+
+  // Preview state
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewTitle, setPreviewTitle] = useState('');
+  const [previewUrl, setPreviewUrl] = useState('');
+
+  const openPreview = (title: string, url: string) => {
+    if (!url || url === '-' || url.trim() === '') return;
+    setPreviewTitle(title);
+    setPreviewUrl(url);
+    setPreviewOpen(true);
+  };
 
   const availableOptions = useMemo(() => ({
     marca: getUniqueValues('marca').filter((value): value is string => Boolean(value) && value !== '-'),
@@ -150,7 +163,11 @@ function App() {
               ) : contents.length > 0 ? (
                 <div className="grid-cards">
                   {contents.map((content) => (
-                    <ContentCard key={content.id} content={content} />
+                    <ContentCard
+                      key={content.id}
+                      content={content}
+                      onPreview={() => openPreview(content.nome || content.titulo, content.link || content.url_principal)}
+                    />
                   ))}
                 </div>
               ) : (
@@ -187,6 +204,14 @@ function App() {
           </main>
         </div>
       </div>
+
+      {/* Preview modal */}
+      <PreviewModal
+        open={previewOpen}
+        title={previewTitle}
+        url={previewUrl}
+        onClose={() => setPreviewOpen(false)}
+      />
     </div>
   );
 }
